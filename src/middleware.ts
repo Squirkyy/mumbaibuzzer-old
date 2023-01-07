@@ -2,7 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const url = "http://localhost:3000";
+  //TODO: Change before commiting
+  const url = "https://buzzer.squirky.me";
   if (request.cookies.get("jakob")?.value) return;
   return NextResponse.redirect(url);
 }
