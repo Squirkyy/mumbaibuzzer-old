@@ -17,6 +17,8 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (jakob.data?.pass) {
       setCookie("jakob", true);
+    } else {
+      setCookie("jakob", false);
     }
   }, [jakob]);
 
