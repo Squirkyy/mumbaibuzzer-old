@@ -2,25 +2,9 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-import { api } from "../utils/api";
 import { useEffect, useState } from "react";
-import { setCookie } from "cookies-next";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const jakob = api.auth.authJakob.useQuery({ password: password });
-  const authCall = async () => {
-    await jakob.refetch();
-  };
-  useEffect(() => {
-    if (jakob.data?.pass) {
-      setCookie("jakob", true);
-    } else {
-      setCookie("jakob", false);
-    }
-  }, [jakob]);
 
   return (
     <>
@@ -50,14 +34,6 @@ const Home: NextPage = () => {
             <label className="label">
               <span className="label-text">What is your name?</span>
             </label>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input-bordered input w-full max-w-xs"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            {name}
           </div>
           <Link
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
@@ -74,21 +50,9 @@ const Home: NextPage = () => {
                 Jakob&apos;s super geheimer SecretKey
               </span>
             </label>
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input-bordered input w-full max-w-xs"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={() => authCall()} className="btn-primary btn">
-              Make Request
-            </button>
-            {name}
           </div>
         </div>
         <p className="text-2xl text-white">
-          {hello.data ? hello.data.greeting : "Loading tRPC query..."}
         </p>
       </div>
     </>
