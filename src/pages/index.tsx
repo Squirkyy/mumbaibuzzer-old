@@ -49,8 +49,7 @@ const Home: NextPage = () => {
             </label>
           </div>
         </div>
-        <p className="text-2xl text-white">
-        </p>
+        <p className="text-2xl text-white"></p>
       </div>
     </>
   );
