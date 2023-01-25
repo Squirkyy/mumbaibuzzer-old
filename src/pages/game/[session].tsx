@@ -1,13 +1,10 @@
-import { useRouter } from 'next/router';
 
-function session() {
-    const router = useRouter();
-    const { session } = router.query;
+function session () {
     return (
         <div>
             <h1>Game</h1>
         </div>
-    )
+    );
 }
 
 export default session; 
