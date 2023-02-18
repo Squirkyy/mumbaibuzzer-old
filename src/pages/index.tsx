@@ -26,11 +26,7 @@ const Home: NextPage = () => {
               <span className="underline"> nicht</span> Jakob bist!
             </div>
           </Link>
-          <div className="form-control w-full max-w-xs">
-            <label className="label">
-              <span className="label-text">What is your name?</span>
-            </label>
-          </div>
+          <div className="form-control w-full max-w-xs"></div>
           <Link
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href={"/game/commander"}
@@ -40,13 +36,7 @@ const Home: NextPage = () => {
               Hier musst du drücken, wenn du Jakob bist!
             </div>
           </Link>
-          <div className="form-control w-full max-w-xs">
-            <label className="label">
-              <span className="label-text">
-                Jakob&apos;s super geheimer SecretKey
-              </span>
-            </label>
-          </div>
+          <div className="form-control w-full max-w-xs"></div>
         </div>
         <p className="text-2xl text-white"></p>
       </div>
