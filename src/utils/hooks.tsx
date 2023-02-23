@@ -1,6 +1,6 @@
-import { collection } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "./firebase";
 
 const useGameData = () => {
@@ -31,4 +31,17 @@ const useGameData = () => {
     return [teams, players, loading];
 };
 
-export default useGameData;
+const useGameInfo = () => {
+    const [value, loading, error] = useDocument(doc(db, "game", "info"));
+    const [isInProgress, setIsInProgress] = useState();
+    useEffect(() => {
+        if (error) {
+            console.error(error);
+        }
+        if (value && !loading) {
+            setIsInProgress(value?.data()?.isRunning);
+        }
+    }, [value, loading]);
+    return [isInProgress, loading];
+};
+export { useGameData, useGameInfo };
