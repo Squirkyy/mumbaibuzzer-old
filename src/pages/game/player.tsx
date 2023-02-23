@@ -1,23 +1,14 @@
-import { doc } from "@firebase/firestore";
 import Router from "next/router";
-import { useEffect, useState } from "react";
-import { useDocument } from "react-firebase-hooks/firestore";
-import { db } from "../../utils/firebase";
+import { useEffect } from "react";
+import { useGameInfo } from "../../utils/hooks";
 
 function Player() {
-    const [value, loading, error] = useDocument(doc(db, "game", "info"));
-    const [isInProgress, setIsInProgress] = useState();
+    const [isInProgress, progressLoading] = useGameInfo();
     useEffect(() => {
-        console.log(value, loading, error);
-        if (isInProgress && !loading) {
+        if (isInProgress && !progressLoading) {
             Router.push("/game");
         }
     }, [isInProgress]);
-    useEffect(() => {
-        if (!loading) {
-            setIsInProgress(value?.data()?.isRunning);
-        }
-    }, [value, loading]);
     return <div>Player</div>;
 }
 
