@@ -1,4 +1,4 @@
-import useGameData from "../../utils/hooks";
+import { useGameData } from "../../utils/hooks";
 
 function Commander() {
     const [teams, players, loading] = useGameData();
