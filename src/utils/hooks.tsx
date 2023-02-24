@@ -1,15 +1,34 @@
-import { collection, doc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
+import type { DocumentData } from "firebase/firestore";
 import { db } from "./firebase";
 
+type Player = string;
 type Team = {
-    name: string;
-    player: string[];
+  player: Player[];
+  name: string;
 };
 
+const teamConverter = {
+    fromFirestore: (snapshot: any, options: any): Team => {
+      const data = snapshot.data(options);
+      return {
+        name: data.name,
+        player: data.player
+      };
+    },
+    toFirestore: (team: Team): DocumentData => {
+      return {
+        name: team.name,
+        player: team.player
+      };
+    }
+  };
+
+
 const useGameData = (): [Team[], string[], boolean] => {
-    const [values, loading, error] = useCollectionData<Team>(collection(db, "team"));
+    const [values, loading, error] = useCollectionData<Team>(collection(db, "team").withConverter(teamConverter));
     const [teams, setTeams] = useState<Team[]>([]);
     const [players, setPlayers] = useState<string[]>([]);
 
