@@ -2,12 +2,12 @@ import { useGameData } from "../../utils/hooks";
 
 function Commander() {
     const [teams, players, loading] = useGameData();
-    const playerListItem = Array.isArray(players)
-        ? players.map((player) => <li key={player}>{player}</li>)
-        : null;
-    const teamListItem = Array.isArray(teams)
-        ? teams.map((team) => <li key={team}>{team.name}</li>)
-        : null;
+    const playerListItem = players
+    ? players.map((player) => <li key={player}>{player}</li>)
+    : null;
+    const teamListItem = teams
+    ? teams.map((team) => <li key={team.name}>{team.name}</li>)
+    : null;
     return (
         <>
             <h1>Commander</h1>

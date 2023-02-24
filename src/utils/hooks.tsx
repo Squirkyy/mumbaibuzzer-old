@@ -3,15 +3,20 @@ import { useEffect, useState } from "react";
 import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "./firebase";
 
-const useGameData = () => {
-    const [values, loading, error] = useCollectionData(collection(db, "team"));
-    const [teams, setTeams] = useState();
-    const [players, setPlayers] = useState();
+type Team = {
+    name: string;
+    player: string[];
+};
 
-    const fillState = (values) => {
+const useGameData = (): [Team[], string[], boolean] => {
+    const [values, loading, error] = useCollectionData<Team>(collection(db, "team"));
+    const [teams, setTeams] = useState<Team[]>([]);
+    const [players, setPlayers] = useState<string[]>([]);
+
+    const fillState = (values: Team[]) => {
         setTeams(values);
-        const allPlayers = [];
-        values.map((team) => {
+        const allPlayers: string[] = [];
+        values.forEach((team) => {
             team.player.forEach((player) => {
                 allPlayers.push(player);
             });
@@ -28,12 +33,14 @@ const useGameData = () => {
             fillState(values);
         }
     }, [values, loading]);
+
     return [teams, players, loading];
 };
 
-const useGameInfo = () => {
+const useGameInfo = (): [boolean | undefined, boolean] => {
     const [value, loading, error] = useDocument(doc(db, "game", "info"));
-    const [isInProgress, setIsInProgress] = useState();
+    const [isInProgress, setIsInProgress] = useState<boolean | undefined>(undefined);
+
     useEffect(() => {
         if (error) {
             console.error(error);
@@ -42,6 +49,8 @@ const useGameInfo = () => {
             setIsInProgress(value?.data()?.isRunning);
         }
     }, [value, loading]);
+
     return [isInProgress, loading];
 };
+
 export { useGameData, useGameInfo };
