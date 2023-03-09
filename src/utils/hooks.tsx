@@ -48,7 +48,6 @@ const useGameData = (): [Team[], string[], boolean] => {
         if (error) {
             console.error(error);
         }
-        console.log(values, loading, error);
         if (values && !loading) {
             fillState(values);
         }
