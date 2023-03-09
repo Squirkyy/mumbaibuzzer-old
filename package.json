@@ -10,16 +10,13 @@
     "start": "next start"
   },
   "dependencies": {
-    "cookies-next": "^2.1.1",
     "daisyui": "^2.46.1",
     "firebase": "^9.16.0",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-firebase-hooks": "^5.1.1",
-    "superjson": "1.9.1",
-    "zod": "^3.20.2"
-  },
+    "react-firebase-hooks": "^5.1.1"
+    },
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@types/prettier": "^2.7.2",
