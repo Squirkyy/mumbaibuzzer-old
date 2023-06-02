@@ -1,13 +1,38 @@
 import Router from "next/router";
-import { SetStateAction, useEffect, useState } from "react";
-import { useGameInfo } from "../../utils/hooks";
+import { useEffect, useState } from "react";
+import { useGameInfo, useGameData } from "../../utils/hooks";
+import {
+    DocumentSnapshot,
+    QuerySnapshot,
+    addDoc,
+    collection,
+    deleteDoc,
+    getDocs,
+    query,
+    where,
+} from "firebase/firestore";
+import { db } from "../../utils/firebase";
 
 function Player() {
     const [isInProgress, progressLoading] = useGameInfo();
+    const [players, loading] = useGameData();
     const [currPlayer, setCurrPlayer] = useState<string>("");
     const [username, setUsername] = useState("");
     const [isUsernameTaken, setIsUsernameTaken] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    useEffect(() => {
+        const savedUsername = localStorage.getItem("username");
+        if (savedUsername) {
+            setUsername(savedUsername);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!players.some((player) => player.Name === currPlayer)) {
+            handleClearSession();
+        }
+    }, [players]);
 
     useEffect(() => {
         if (isInProgress && !progressLoading) {
@@ -15,37 +40,53 @@ function Player() {
         }
     }, [isInProgress]);
 
-    useEffect(() => {
-        const savedUsername = sessionStorage.getItem("username");
-        if (savedUsername) {
-            setUsername(savedUsername);
-        }
-    }, []);
-
-    const handleUsernameChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setUsername(event.target.value);
-    };
-
-    const handleSubmit = (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-        // Placeholder check for username availability using `confirm`
-        const isNameAvailable = confirm("Do you want to use this username?");
-        if (isNameAvailable) {
-            sessionStorage.setItem("username", username);
-            setIsUsernameTaken(false);
-            setErrorMessage("");
-        } else {
-            setIsUsernameTaken(true);
-            setErrorMessage(
-                "Sorry, that username is already taken. Please choose another one."
-            );
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (currPlayer) {
+            const isExist = isUsernameExist(currPlayer);
+            if (isExist) {
+                setIsUsernameTaken(true);
+                setErrorMessage("Username is already taken.");
+            } else {
+                setUsername(currPlayer);
+                localStorage.setItem("username", currPlayer);
+                await addDoc(collection(db, "player"), { name: currPlayer });
+                setIsUsernameTaken(false);
+                setErrorMessage("");
+            }
         }
     };
 
-    const handleClearSession = () => {
-        sessionStorage.clear();
+    const handleClearSession = async () => {
+        await deleteDocumentByName();
+        localStorage.removeItem("username");
         setUsername("");
     };
+
+    const deleteDocumentByName = async (): Promise<void> => {
+        const collectionRef = collection(db, "player");
+        const q = query(collectionRef, where("name", "==", currPlayer));
+
+        try {
+            const snapshot: QuerySnapshot = await getDocs(q);
+
+            if (snapshot.size === 0) {
+                console.log("No documents found.");
+                return;
+            }
+
+            snapshot.forEach(async (doc: DocumentSnapshot) => {
+                await deleteDoc(doc.ref);
+                console.log("Document deleted successfully:", doc.id);
+            });
+        } catch (error) {
+            console.error("Error deleting documents:", error);
+        }
+    };
+
+    function isUsernameExist(name: string): boolean {
+        return players.some((player) => player.Name === name);
+    }
 
     return (
         <div>
@@ -53,7 +94,11 @@ function Player() {
                 <form onSubmit={handleSubmit}>
                     <label>
                         Username:
-                        <input type="text" />
+                        <input
+                            type="text"
+                            value={currPlayer}
+                            onChange={(e) => setCurrPlayer(e.target.value)}
+                        />
                     </label>
                     <button type="submit">Save</button>
                     {isUsernameTaken && <p className="error">{errorMessage}</p>}
