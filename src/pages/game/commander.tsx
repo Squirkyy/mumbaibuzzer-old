@@ -26,9 +26,9 @@ function Commander() {
                 {players.some((player) => player.Name !== null) ? (
                     <>
                         <ul>{playerList}</ul>
-                        <Button className="btn" onClick={() => removeAllUser()}>
+                        <button className="btn" onClick={() => removeAllUser()}>
                             Remove all Users
-                        </Button>
+                        </button>
                     </>
                 ) : (
                     <h1>No Players here Yet.....</h1>
