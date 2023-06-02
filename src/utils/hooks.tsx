@@ -1,59 +1,31 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useCollectionData, useDocument } from "react-firebase-hooks/firestore";
-import type { DocumentData } from "firebase/firestore";
 import { db } from "./firebase";
 
-export type Player = string;
-export type Team = {
-    player: Player[];
-    name: string;
-};
+export interface Player {
+    Name: string;
+}
 
-const teamConverter = {
-    fromFirestore: (snapshot: any, options: any): Team => {
-        const data = snapshot.data(options);
-        return {
-            name: data.name,
-            player: data.player,
-        };
-    },
-    toFirestore: (team: Team): DocumentData => {
-        return {
-            name: team.name,
-            player: team.player,
-        };
-    },
-};
-
-const useGameData = (): [Team[], string[], boolean] => {
-    const [values, loading, error] = useCollectionData<Team>(
-        collection(db, "team").withConverter(teamConverter)
+const useGameData = (): [Player[], boolean] => {
+    const [players, setPlayers] = useState<Player[]>([]);
+    const [values, loading, error] = useCollectionData(
+        collection(db, "player")
     );
-    const [teams, setTeams] = useState<Team[]>([]);
-    const [players, setPlayers] = useState<string[]>([]);
-
-    const fillState = (values: Team[]) => {
-        setTeams(values);
-        const allPlayers: string[] = [];
-        values.forEach((team) => {
-            team.player.forEach((player) => {
-                allPlayers.push(player);
-            });
-        });
-        setPlayers(allPlayers);
-    };
 
     useEffect(() => {
         if (error) {
             console.error(error);
         }
         if (values && !loading) {
-            fillState(values);
+            const mappedPlayers = values.map((value) => ({
+                Name: value.name,
+            })) as Player[];
+            setPlayers(mappedPlayers);
         }
-    }, [values, loading]);
+    }, [values, loading, error]);
 
-    return [teams, players, loading];
+    return [players, loading];
 };
 
 const useGameInfo = (): [boolean | undefined, boolean] => {
