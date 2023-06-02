@@ -9,7 +9,13 @@ function Game() {
             Router.push("/game/player");
         }
     }, [isInProgress]);
-    return <div>Game</div>;
+
+    const reportBuzz = () => {};
+    return (
+        <>
+            <button>Buzz</button>
+        </>
+    );
 }
 
 export default Game;
