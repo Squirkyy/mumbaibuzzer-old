@@ -28,11 +28,12 @@ const useGameData = (): [Player[], boolean] => {
     return [players, loading];
 };
 
-const useGameInfo = (): [boolean | undefined, boolean] => {
+const useGameInfo = (): [boolean | undefined, boolean, boolean | undefined] => {
     const [value, loading, error] = useDocument(doc(db, "game", "info"));
     const [isInProgress, setIsInProgress] = useState<boolean | undefined>(
         undefined
     );
+    const [isPaused, setIsPaused] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
         if (error) {
@@ -40,10 +41,11 @@ const useGameInfo = (): [boolean | undefined, boolean] => {
         }
         if (value && !loading) {
             setIsInProgress(value?.data()?.isRunning);
+            setIsPaused(value?.data()?.isPaused);
         }
     }, [value, loading]);
 
-    return [isInProgress, loading];
+    return [isInProgress, loading, isPaused];
 };
 
 export { useGameData, useGameInfo };
