@@ -34,9 +34,11 @@ function Game() {
         });
         setButtonEnabled(false);
     };
+    //TODO: Error-Page (when no Username in Session was found)
     if (user == null) {
         return <h1>You have no permissions to be here.</h1>;
     }
+    //TODO: Actual buzzer (maybe with Icon and the Width and size) + potentially the username in one of the corners
     return (
         <>
             You are playing as {user}.

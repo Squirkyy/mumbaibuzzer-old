@@ -44,6 +44,7 @@ function Commander() {
         });
     };
 
+    //TODO: Styling of the Setup phase where users choose their names
     const setupStage = (): JSX.Element => {
         return (
             <>
@@ -61,6 +62,7 @@ function Commander() {
         );
     };
 
+    //TODO: Styling of the Playing Phase where users buzz and jakob and clear it.
     const gameStage = () => {
         return (
             <>
@@ -87,6 +89,7 @@ function Commander() {
         );
     };
 
+    //TODO: The placement of the button to toggle the state may be changed to a switch and put in one of the corners so that it isn't accidentally pressed
     if (loading || gameinfoLoading) {
         return <div>Loading Players...</div>;
     } else {

@@ -86,6 +86,7 @@ function Player() {
         return players.some((player) => player.Name === name);
     }
 
+    //TODO: Styling vom Username Screen
     return (
         <div>
             {!username && (
