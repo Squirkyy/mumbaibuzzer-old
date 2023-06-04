@@ -2,8 +2,6 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import { useGameInfo, useGameData } from "../../utils/hooks";
 import {
-    DocumentSnapshot,
-    QuerySnapshot,
     addDoc,
     collection,
     deleteDoc,
@@ -11,6 +9,7 @@ import {
     query,
     where,
 } from "firebase/firestore";
+import type { DocumentSnapshot, QuerySnapshot } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 
 function Player() {
@@ -29,10 +28,10 @@ function Player() {
     }, []);
 
     useEffect(() => {
-        if (!players.some((player) => player.Name === currPlayer)) {
+        if (!loading && !players.some((player) => player.Name === currPlayer)) {
             handleClearSession();
         }
-    }, [players]);
+    }, [players, loading]);
 
     useEffect(() => {
         if (isInProgress && !progressLoading) {
@@ -66,7 +65,6 @@ function Player() {
     const deleteDocumentByName = async (): Promise<void> => {
         const collectionRef = collection(db, "player");
         const q = query(collectionRef, where("name", "==", currPlayer));
-
         try {
             const snapshot: QuerySnapshot = await getDocs(q);
 
