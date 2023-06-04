@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useGameData, useGameInfo } from "../../utils/hooks";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../utils/firebase";
+import { useHotkeys } from "@mantine/hooks";
 
 function Game() {
     const [buttonEnabled, setButtonEnabled] = useState(true);
@@ -13,7 +14,7 @@ function Game() {
         if (!isInProgress && !progressLoading) {
             Router.push("/game/player");
         }
-    }, [isInProgress, progressLoading]);
+    }, [isInProgress]);
 
     useEffect(() => {
         setUser(localStorage.getItem("username"));
