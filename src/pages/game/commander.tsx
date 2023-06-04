@@ -65,12 +65,22 @@ function Commander() {
         return (
             <>
                 <h1>Game View</h1>
-                <ol>
-                    {buzzed.map((player) => (
-                        <li key={player.timestamp.toString()}>{player.Name}</li>
-                    ))}
+                <ol className="list-decimal">
+                    {buzzed.map((player) => {
+                        const timestamp = player.timestamp.toDate();
+                        const formattedTime = `${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds()}`;
+
+                        return (
+                            <li key={player.timestamp.toString()}>
+                                {player.Name} ({formattedTime})
+                            </li>
+                        );
+                    })}
                 </ol>
-                <button onClick={() => removeAllBuzzed()}>
+                <button
+                    className="btn-info btn"
+                    onClick={() => removeAllBuzzed()}
+                >
                     Remove the buzzed
                 </button>
             </>
