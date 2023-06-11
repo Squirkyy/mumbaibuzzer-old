@@ -3,7 +3,6 @@ import { db } from "../utils/firebase";
 import PlayerList from "./PlayerList";
 import { useRouter } from "next/router";
 
-//make countercheck on user side with token in localstorage
 export async function removeAllUser() {
     const colRef = collection(db, "player");
     const snapshop = await getDocs(colRef);
