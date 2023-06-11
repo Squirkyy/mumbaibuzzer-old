@@ -4,9 +4,9 @@ import { useGameData, useGameInfo } from "../../utils/hooks";
 import { useEffect } from "react";
 
 function Commander() {
-    const [players, loading, buzzed] = useGameData();
+    const [, loading, buzzed] = useGameData();
     const [isInProgress, gameinfoLoading] = useGameInfo();
-    const [play, info] = useSound("/sound/ding.mp3");
+    const [play] = useSound("/sound/ding.mp3");
     useEffect(() => {
         if (buzzed.length !== 0) {
             play();
