@@ -1,3 +1,4 @@
+import { removeAllBuzzed } from "../../components/ToggleGame";
 import { useGameData, useGameInfo } from "../../utils/hooks";
 
 function Commander() {
@@ -7,9 +8,10 @@ function Commander() {
     const setupStage = () => {
         return (
             <>
-                <h1>Setup View</h1>
+                <b>Setup View</b>
+                <div>You can relax here!</div>
             </>
-        )
+        );
     };
 
     //TODO: Styling of the Playing Phase where users buzz and jakob and clear it.
@@ -38,18 +40,12 @@ function Commander() {
             </>
         );
     };
-    
 
     //TODO: The placement of the button to toggle the state may be changed to a switch and put in one of the corners so that it isn't accidentally pressed
     if (loading || gameinfoLoading) {
         return <div>Loading Players...</div>;
     } else {
-        return (
-            <>
-                {!isInProgress ? setupStage() : gameStage()}
-
-            </>
-        );
+        return <>{!isInProgress ? setupStage() : gameStage()}</>;
     }
 }
 
