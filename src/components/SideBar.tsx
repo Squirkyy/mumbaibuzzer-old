@@ -17,14 +17,17 @@ function SideBar() {
     return (
         <ul className="menu ml-5  flex basis-1/12 flex-col items-center bg-slate-900">
             {router.pathname == "/game/commander" && (
-                <button
-                    className="btn-accent btn mb-4 mt-5"
-                    onClick={() => removeAllUser()}
-                >
-                    Kick all players
-                </button>
+                <div>
+                    <button
+                        className="btn-accent btn mb-4 mt-5"
+                        onClick={() => removeAllUser()}
+                    >
+                        Kick all players
+                    </button>
+                    <div className="divider mx-4 my-0" />
+                </div>
             )}
-            <div className="divider mx-4 my-0" />
+            
             <h1 className="my-2 text-center text-xl text-gray-200">Players</h1>
             <PlayerList />
         </ul>
