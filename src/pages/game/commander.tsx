@@ -1,10 +1,17 @@
+import useSound from "use-sound";
 import { removeAllBuzzed } from "../../components/ToggleGame";
 import { useGameData, useGameInfo } from "../../utils/hooks";
+import { useEffect } from "react";
 
 function Commander() {
     const [players, loading, buzzed] = useGameData();
     const [isInProgress, gameinfoLoading] = useGameInfo();
-
+    const [play, info] = useSound("/sound/ding.mp3");
+    useEffect(() => {
+        if (buzzed.length !== 0) {
+            play();
+        }
+    }, [buzzed]);
     const setupStage = () => {
         return (
             <>
@@ -14,7 +21,6 @@ function Commander() {
         );
     };
 
-    //TODO: Styling of the Playing Phase where users buzz and jakob and clear it.
     const gameStage = () => {
         return (
             <>
@@ -23,7 +29,6 @@ function Commander() {
                     {buzzed.map((player) => {
                         const timestamp = player.timestamp.toDate();
                         const formattedTime = `${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds()}`;
-
                         return (
                             <li key={player.timestamp.toString()}>
                                 {player.Name} ({formattedTime})
@@ -41,7 +46,6 @@ function Commander() {
         );
     };
 
-    //TODO: The placement of the button to toggle the state may be changed to a switch and put in one of the corners so that it isn't accidentally pressed
     if (loading || gameinfoLoading) {
         return <div>Loading Players...</div>;
     } else {
