@@ -46,7 +46,7 @@ function Game() {
     //TODO: Actual buzzer (maybe with Icon and the Width and size) + potentially the username in one of the corners
     return (
         <>
-            You are playing as {user}.
+            <div className="mb-3">You are playing as <b>{user}</b>.</div>
             <button
                 disabled={!buttonEnabled}
                 className="btn-primary btn"
