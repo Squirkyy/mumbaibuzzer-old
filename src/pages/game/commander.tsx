@@ -2,6 +2,8 @@ import useSound from "use-sound";
 import { removeAllBuzzed } from "../../components/ToggleGame";
 import { useGameData, useGameInfo } from "../../utils/hooks";
 import { useEffect } from "react";
+import moment from 'moment';
+
 
 function Commander() {
     const [, loading, buzzed] = useGameData();
@@ -25,13 +27,13 @@ function Commander() {
         return (
             <>
                 <h1>Game View</h1>
-                <ol className="list-decimal">
+                <ol className="list-decimal mb-3">
                     {buzzed.map((player) => {
                         const timestamp = player.timestamp.toDate();
-                        const formattedTime = `${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds()}`;
+                        const formattedTime = moment(timestamp).format('HH:mm:ss');
                         return (
                             <li key={player.timestamp.toString()}>
-                                {player.Name} ({formattedTime})
+                                <b>{player.Name}</b> ({formattedTime})
                             </li>
                         );
                     })}
