@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import { useGameData, useGameInfo } from "../../utils/hooks";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../utils/firebase";
-import { useHotkeys } from "@mantine/hooks";
+import useSound from "use-sound";
 
 function Game() {
     const [buttonEnabled, setButtonEnabled] = useState(true);
-    const [, loading, buzzed] = useGameData();
+    const [players, loading, buzzed] = useGameData();
     const [isInProgress, progressLoading] = useGameInfo();
     const [user, setUser] = useState<string | null>(null);
+    const [play] = useSound("/sound/ding.mp3");
     useEffect(() => {
         if (!isInProgress && !progressLoading) {
             Router.push("/game/player");
@@ -18,7 +19,11 @@ function Game() {
 
     useEffect(() => {
         setUser(localStorage.getItem("username"));
-    }, []);
+        if (!loading && !players.some((player) => player.Name == user)){
+            localStorage.clear();
+            setUser(null);
+        }
+    }, [players]);
 
     useEffect(() => {
         if (!loading && buzzed.length == 0) {
@@ -27,6 +32,7 @@ function Game() {
     }, [buzzed, loading]);
 
     const reportBuzz = async () => {
+        play();
         const collRef = collection(db, "game/info/buzzed");
         await addDoc(collRef, {
             name: user,
@@ -34,7 +40,6 @@ function Game() {
         });
         setButtonEnabled(false);
     };
-    //TODO: Error-Page (when no Username in Session was found)
     if (user == null) {
         return <h1>You have no permissions to be here.</h1>;
     }

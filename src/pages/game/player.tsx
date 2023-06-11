@@ -88,30 +88,38 @@ function Player() {
 
     //TODO: Styling vom Username Screen
     return (
-        <div>
+        <>
             {!username && (
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Username:
+                <div className="form-control w-full max-w-xs">
+                    <form onSubmit={handleSubmit}>
+                        <label className="label">
+                            <span className="label-text text-l">Username:</span>
+                        </label>
+                        <div className="flex flex-row">
                         <input
+                        className="input input-bordered w-full max-w-xs" 
                             type="text"
                             value={currPlayer}
                             onChange={(e) => setCurrPlayer(e.target.value)}
                         />
-                    </label>
-                    <button type="submit">Save</button>
-                    {isUsernameTaken && <p className="error">{errorMessage}</p>}
-                </form>
+                        <button type="submit" className="btn btn-success place-self-center">Save</button>
+                        </div>
+                      
+                        {isUsernameTaken && <p className="error">{errorMessage}</p>}
+                    </form>      
+                </div>
             )}
+            
             {username && (
                 <div>
-                    <p>Username: {username}</p>
-                    <button onClick={handleClearSession}>
+                    <p>Username: <b>{username}</b></p>
+                    <button className="btn btn-warning" onClick={handleClearSession}>
                         Change Username
                     </button>
                 </div>
             )}
-        </div>
+        </>
+    
     );
 }
 export default Player;
