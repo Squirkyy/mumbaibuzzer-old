@@ -97,7 +97,7 @@ function Player() {
                         </label>
                         <div className="flex flex-row">
                         <input
-                        className="input input-bordered w-full max-w-xs" 
+                        className="input input-bordered w-full max-w-xs mr-3" 
                             type="text"
                             value={currPlayer}
                             onChange={(e) => setCurrPlayer(e.target.value)}
@@ -112,7 +112,7 @@ function Player() {
             
             {username && (
                 <div>
-                    <p>Username: <b>{username}</b></p>
+                    <div className="mb-3">Username: <b>{username}</b></div>
                     <button className="btn btn-warning" onClick={handleClearSession}>
                         Change Username
                     </button>
